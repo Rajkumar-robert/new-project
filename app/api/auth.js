@@ -1,4 +1,3 @@
-// api/auth.js
 import api from "./axios";
 import { saveUserToLocalStorage, clearUserFromLocalStorage } from "../utils/localStorage";
 
@@ -14,6 +13,17 @@ export const signup = async ({ email, password, confirmPassword, full_name }) =>
   if (res.data.token) {
     saveUserToLocalStorage(res.data.user || {}, res.data.token);
   }
+  return res.data;
+};
+
+// User Profile API
+export const createUserProfile = async (profileData) => {
+  // profileData should be a FormData object for file upload
+  const res = await api.post("/user/userProfile/", profileData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 
@@ -36,8 +46,9 @@ export const logout = async (refresh) => {
 // Forgot Password (request reset email)
 export const forgotPassword = async (email) => {
   console.log("Forgot Password called with:", { email });
-  const res = await api.post("/user/forgot-password/", { email });
-  return res.data;
+  // const res = await api.post("/user/forgot-password/", { email });
+  // return res.data;
+  return { success: true }; // Mock response
 };
 
 // Password Reset Complete (set new password)
