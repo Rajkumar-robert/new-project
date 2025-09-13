@@ -1,10 +1,3 @@
-// utils/localStorage.js
-
-/**
- * Safely saves user details and token to localStorage (client-side only).
- * @param {Object} user - The user object to save.
- * @param {string} token - The authentication token to save.
- */
 export function saveUserToLocalStorage(user, token) {
   if (typeof window !== "undefined" && window.localStorage) {
     if (user) {
@@ -16,9 +9,6 @@ export function saveUserToLocalStorage(user, token) {
   }
 }
 
-/**
- * Retrieves the user object from localStorage.
- */
 export function getUserFromLocalStorage() {
   if (typeof window !== "undefined" && window.localStorage) {
     const user = localStorage.getItem("user");
@@ -27,9 +17,6 @@ export function getUserFromLocalStorage() {
   return null;
 }
 
-/**
- * Removes user and token from localStorage.
- */
 export function clearUserFromLocalStorage() {
   if (typeof window !== "undefined" && window.localStorage) {
     localStorage.removeItem("user");
