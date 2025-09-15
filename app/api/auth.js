@@ -31,24 +31,37 @@ export const createUserProfile = async (profileData) => {
 export const login = async ({ email, password }) => {
   console.log("Login called with:", { email, password });
   const res = await api.post("/user/login/", { email, password });
-  if (res.data.token) {
-    saveUserToLocalStorage(res.data.user || {}, res.data.token);
+  // Store user and tokens in localStorage
+  saveUserToLocalStorage(res.data.user || {}, res.data.tokens);
+  if (res.data.tokens && res.data.tokens.refresh) {
+    if (typeof window !== "undefined" && window.localStorage) {
+      localStorage.setItem("refreshToken", res.data.tokens.refresh);
+    }
   }
   return res.data;
 };
 
 // Logout
 export const logout = async (refresh) => {
-  await api.post("/user/logout/", { refresh });
+  let refreshToken = refresh;
+  if (!refreshToken && typeof window !== "undefined" && window.localStorage) {
+    refreshToken = localStorage.getItem("refreshToken");
+  }
+  if (refreshToken) {
+    await api.post("/user/logout/", { refresh: refreshToken });
+  }
   clearUserFromLocalStorage();
+  if (typeof window !== "undefined" && window.localStorage) {
+    localStorage.removeItem("refreshToken");
+  }
 };
 
 // Forgot Password (request reset email)
 export const forgotPassword = async (email) => {
   console.log("Forgot Password called with:", { email });
-  // const res = await api.post("/user/forgot-password/", { email });
-  // return res.data;
-  return { success: true }; // Mock response
+  const res = await api.post("/user/forgot-password/", { email });
+  return res.data;
+  // return { success: true };
 };
 
 // Password Reset Complete (set new password)
