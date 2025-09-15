@@ -1,6 +1,7 @@
 "use client";
 import { createContext, useState, useEffect, useContext } from "react";
 import { getUserFromLocalStorage, clearUserFromLocalStorage } from "../utils/localStorage";
+import { logout as apiLogout } from "../api/auth";
 
 export const UserContext = createContext();
 
@@ -11,9 +12,15 @@ export default function UserContextProvider({ children }) {
 		setUser(getUserFromLocalStorage());
 	}, []);
 
-	const logout = () => {
-		clearUserFromLocalStorage();
-		setUser(null);
+	const logout = async () => {
+		try {
+			await apiLogout();
+			clearUserFromLocalStorage();
+			setUser(null);
+		} catch (err) {
+			// Optionally handle error (e.g., show notification)
+			console.error("Logout failed", err);
+		}
 	};
 
 	return (
