@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { login } from "../api/auth";
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const router = useRouter();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -15,8 +17,7 @@ export default function LoginPage() {
     e.preventDefault();
     try {
       const data = await login(form);
-      alert("Login successful!");
-      console.log("User:", data);
+      router.push("/");
     } catch (err) {
       setError("Invalid credentials");
     }
