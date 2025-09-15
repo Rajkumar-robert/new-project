@@ -59,20 +59,19 @@ export default function SignupPage() {
       setError("Password must be at least 8 characters, include upper and lowercase, a number, and a special character.");
       return;
     }
-    setStep(2);
-    // try {
-    //   const data = await signup({
-    //     full_name: form.full_name,
-    //     email: form.email,
-    //     password: form.password,
-    //     confirmPassword: form.confirmPassword
-    //   });
-    //   // Prefill profile form
-    //   setProfileForm((prev) => ({ ...prev, email: data.user?.email || form.email, full_name: data.user?.full_name || form.full_name }));
-    //   setStep(2);
-    // } catch (err) {
-    //   setError("Signup failed");
-    // }
+    try {
+      // const data = await signup({
+      //   full_name: form.full_name,
+      //   email: form.email,
+      //   password: form.password,
+      //   confirmPassword: form.confirmPassword
+      // });
+      // Prefill profile form
+      // setProfileForm((prev) => ({ ...prev, email: data.user?.email || form.email, full_name: data.user?.full_name || form.full_name }));
+      setStep(2);
+    } catch (err) {
+      setError("Signup failed");
+    }
   };
 
   const handleProfileSubmit = async (e) => {
