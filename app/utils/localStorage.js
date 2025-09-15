@@ -1,10 +1,14 @@
-export function saveUserToLocalStorage(user, token) {
+export function saveUserToLocalStorage(user, tokens) {
   if (typeof window !== "undefined" && window.localStorage) {
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
     }
-    if (token) {
-      localStorage.setItem("token", token);
+    if (tokens) {
+      // tokens is an object with access and refresh
+      localStorage.setItem("tokens", JSON.stringify(tokens));
+      if (tokens.access) {
+        localStorage.setItem("token", tokens.access); // for backward compatibility
+      }
     }
   }
 }
@@ -21,5 +25,6 @@ export function clearUserFromLocalStorage() {
   if (typeof window !== "undefined" && window.localStorage) {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    localStorage.removeItem("tokens");
   }
 }
